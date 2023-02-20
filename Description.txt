@@ -1,0 +1,16 @@
+﻿https://www.youtube.com/embed/playlist?list=PLL-k0Ff5RfqW8dF5-othi-imF6g48tUj5
+https://github.com/aspnet
+
+ASP Web NET.Core 3.1
+[14]
+
+~~~~~~~~~
+[3]
+Program.cs
+запуск сервера проекта, инициализация хоста
+IIS как прокси сервер, затем запрос идет на Kestrel
+
+консоль, host 8080
+
+~~~~~~~~~
+[4]
