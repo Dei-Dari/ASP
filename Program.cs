@@ -16,13 +16,14 @@ namespace ASP
     {
         public static void Main(string[] args)
         {
-            //CreateHostBuilder(args).Build().Run();
-            using (var host = WebHost.Start("http://localhost:8080", context => context.Response.WriteAsync("Hello WebHost!")))
-            {
-                Console.WriteLine("Applicaton has been started");
-                // блокировка
-                host.WaitForShutdown();
-            };
+            CreateHostBuilder(args).Build().Run();
+            //// запуск через хост
+            //using (var host = WebHost.Start("http://localhost:8080", context => context.Response.WriteAsync("Hello WebHost!")))
+            //{
+            //    Console.WriteLine("Applicaton has been started");
+            //    // блокировка
+            //    host.WaitForShutdown();
+            //};
 
             // запуск сервера проекта, не сразу черз сервер IIS
             //var host = new WebHostBuilder().UseKestrel().UseContentRoot(Directory.GetCurrentDirectory()).UseIISIntegration().UseStartup<Startup>().Build();
