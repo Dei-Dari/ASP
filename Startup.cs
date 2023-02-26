@@ -55,6 +55,12 @@ namespace ASP
                 app.UseHsts();
             }
 
+            //// типизация компонентом
+            //app.UseMiddleware<TokenMiddleware>();
+            // использование с переопредеением, также вызывает TokenMiddleware
+            // любой образец для token
+            app.UseToken("654321"); 
+
             // методы map могут быть вложенными
             app.Map("/home", home =>
             {
