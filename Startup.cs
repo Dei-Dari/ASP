@@ -59,27 +59,27 @@ namespace ASP
             //app.UseMiddleware<TokenMiddleware>();
             // использование с переопредеением, также вызывает TokenMiddleware
             // любой образец для token
-            app.UseToken("654321"); 
+            //app.UseToken("654321"); 
 
-            // методы map могут быть вложенными
-            app.Map("/home", home =>
-            {
-                // параметр home - IApplicationBuilder, у него вызываем метод map
-                // путь запроса, по которому нужно обработать, деоегат - любое действие, которое принимает app builder и ничего не возвращает
-                // в лямбда выражении определяется логика обработки запроса по этому пути
-                home.Map("/index", (appBuilder) =>
-                {
-                    // ответ пользователю по пути /home/index
-                    appBuilder.Run(async (context) =>
-                    {
-                        context.Response.ContentType = "text/html;charset=utf-8";
-                        await context.Response.WriteAsync("<h2>Home Page</h2>");
-                    });
-                });
-                // обработчик методом 
-                // ответ пользователю по пути /home/about
-                home.Map("/about", About);
-            });
+            //// методы map могут быть вложенными
+            //app.Map("/home", home =>
+            //{
+            //    // параметр home - IApplicationBuilder, у него вызываем метод map
+            //    // путь запроса, по которому нужно обработать, деоегат - любое действие, которое принимает app builder и ничего не возвращает
+            //    // в лямбда выражении определяется логика обработки запроса по этому пути
+            //    home.Map("/index", (appBuilder) =>
+            //    {
+            //        // ответ пользователю по пути /home/index
+            //        appBuilder.Run(async (context) =>
+            //        {
+            //            context.Response.ContentType = "text/html;charset=utf-8";
+            //            await context.Response.WriteAsync("<h2>Home Page</h2>");
+            //        });
+            //    });
+            //    // обработчик методом 
+            //    // ответ пользователю по пути /home/about
+            //    home.Map("/about", About);
+            //});
 
             //// путь запроса, по которому нужно обработать, деоегат - любое действие, которое принимает app builder и ничего не возвращает
             //// в лямбда выражении определяется логика обработки запроса по этому пути
@@ -96,18 +96,18 @@ namespace ASP
             //// ответ пользователю по пути /about
             //app.Map("/about", About);
 
-            // context - HttpContext, next - delegate task
-            app.Use(async (context, next) =>
-            {
-                // когда приходит запрос, сначала компонент получает значение из компонента use, а затем передает в данном случае в run
-                z = x * y;  // z = 10
-                //await context.Response.WriteAsync("Hello");
-                // вызов следующего компонента в конвеере через вызов делегата из параметра next
-                await next();
-                // управление обработкой запроса возвращается этому компоненту
-                z = z * 5;  // z = 50
-                await context.Response.WriteAsync($"result: {z}");
-            });
+            //// context - HttpContext, next - delegate task
+            //app.Use(async (context, next) =>
+            //{
+            //    // когда приходит запрос, сначала компонент получает значение из компонента use, а затем передает в данном случае в run
+            //    z = x * y;  // z = 10
+            //    //await context.Response.WriteAsync("Hello");
+            //    // вызов следующего компонента в конвеере через вызов делегата из параметра next
+            //    await next();
+            //    // управление обработкой запроса возвращается этому компоненту
+            //    z = z * 5;  // z = 50
+            //    await context.Response.WriteAsync($"result: {z}");
+            //});
 
             // в качестве параметра принимает public delegate Task RequestDelegate(HttpContext context),
             // делегат использует один объект контекст, обращаемся к управлению ответом и в ответ на запрос приложения передается строка
@@ -127,7 +127,13 @@ namespace ASP
             //        $"<h3>Путь запроса: {path}</h3>" +
             //        $"<h3>Параметры строки запроса: {query}</h3>");
             //});
-            app.Run(Handle);
+
+            // создание конвеера из компонентов Middleware, class RoutingMiddleware
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+            app.UseMiddleware<AuthenticationMiddleware>();            
+            app.UseMiddleware<RoutingMiddleware>();
+
+            // app.Run(Handle);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -143,7 +149,7 @@ namespace ASP
         }
 
         // middleware метод
-        private async Task Handle(HttpContext context)
+        public async Task Handle(HttpContext context)
         {
             // через контекст можно узнать все данные запроса и управлять ответом (напр хост, путь запроса, запрос-параметры строки запроса)
             string host = context.Request.Host.Value;           // хост - домен и порт

@@ -68,3 +68,23 @@ UseMiddleware
 можно использовать UseToken
 
 передача параметров в компонент Middleware
+
+~~~~~~~~~
+[10]
+создание конвеера из компонентов Middleware
+class RoutingMiddleware
+
+компонент необходимо встроить в конвеер
+Startup.cs - Configure - UseMiddleware
+
++ еще компоненент аутентификации по токену
+class AuthenticationMiddleware
+
++ компонент обработки ошибок, информация для пользователя, не статусным кодом
+class ErrorHandlerMiddleware
+пост обработка результатов выполнения других компонентов => в конвеер на первое место
+каждый компонент, кроме тернального, может обрабатывать запрос два раза => можно передать здесь выполнение следующему компоненту
+
+выполнение обработки запроса переходит к предыдущему компоненту
+ErrorHandlerMiddleware - AuthenticationMiddleware - RoutingMiddleware - AuthenticationMiddleware - ErrorHandlerMiddleware
+происходит промотр статусных кодов

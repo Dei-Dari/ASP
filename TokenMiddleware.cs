@@ -11,8 +11,8 @@ namespace ASP
     {
         // конструктор, параметр тип запрос делегат, через этот компонент можно обращаться к следующему методу в конвеере для обработки запроса
         // для сохранения объекта
-        RequestDelegate _next;
-        string _pattern;
+        private readonly RequestDelegate _next;
+        private readonly string _pattern;
         public TokenMiddleware(RequestDelegate next, string pattern)
         {
             _next = next;
