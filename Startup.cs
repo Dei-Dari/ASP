@@ -33,7 +33,7 @@ namespace ASP
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         // определяет обработку запроса
-        // конвеер, все методы - кол-во компонентов конвеера
+        // конвейер, все методы - кол-во компонентов конвеера
         // Middleware
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -44,7 +44,7 @@ namespace ASP
             // приложение в процессе разработки или развернуто 
             if (env.IsDevelopment())
             {
-                // в процессе разработки, встраиваем в конвеер обработки запроса компонент вывода об ошибке
+                // в процессе разработки, встраиваем в конвейер обработки запроса компонент вывода об ошибке
                 app.UseDeveloperExceptionPage();
             }
             else

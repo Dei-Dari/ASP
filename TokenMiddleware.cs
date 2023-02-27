@@ -52,7 +52,7 @@ namespace ASP
         // метод usetoken,  используется IApplicationBuilder
         public static IApplicationBuilder UseToken(this IApplicationBuilder builder, string pattern)
         {
-            // встраиваем в конвеер обработки запроса, при вызове метода, передается значение в конструктор
+            // встраиваем в конвейер обработки запроса, при вызове метода, передается значение в конструктор
             return builder.UseMiddleware<TokenMiddleware>(pattern);
         }
     }
