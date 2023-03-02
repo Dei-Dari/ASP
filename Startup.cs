@@ -37,9 +37,9 @@ namespace ASP
         // Middleware
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            int x = 5;
-            int y = 2;
-            //int z = 0;
+            // int x = 5;
+            // int y = 2;
+            // int z = 0;
             // int x = 2;  //метод запускается только один раз, и определяет переменную
             // приложение в процессе разработки или развернуто 
             if (env.IsDevelopment())
@@ -54,6 +54,17 @@ namespace ASP
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            // переопределение имен файла по-умолчанию
+            DefaultFilesOptions opt = new DefaultFilesOptions();
+            opt.DefaultFileNames.Clear();   //удаление используемых названий по=умолчанию
+            opt.DefaultFileNames.Add("hello.html");
+
+            // файлы по-умолчанию
+            app.UseDefaultFiles(opt);
+
+            // статические файлы
+            app.UseStaticFiles();
 
             //// типизация компонентом
             //app.UseMiddleware<TokenMiddleware>();
@@ -136,7 +147,8 @@ namespace ASP
             // app.Run(Handle);
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+
+            
 
             app.UseRouting();
 

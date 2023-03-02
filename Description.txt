@@ -87,4 +87,34 @@ class ErrorHandlerMiddleware
 
 выполнение обработки запроса переходит к предыдущему компоненту
 ErrorHandlerMiddleware - AuthenticationMiddleware - RoutingMiddleware - AuthenticationMiddleware - ErrorHandlerMiddleware
-происходит промотр статусных кодов
+происходит промотр статусных кодов, передача сообщения со статусным кодом
+
+~~~~~~~~~
+[11]
+статические файлы
+NuGet Microsoft.AspNetCore.StaticFiles
+
+Startup.cs - Configure - UseStaticFiles
+размещается в начале конвейера обработки запросов
+если запрос придет к статическому файлу,
+то компонент получит запрос, обработает, ответ пользователю,
+иначе к следующему компоненту
+
+по умолчанию для статических файлов wwwroot
+new file hello.html
+
+можно использовать любую папку
+folder Static - file content.html
+Program.cs при создании хоста вызвать метод для использования папки статичесских файлов UseWebRoot
+
+файлы по-умолчанию
+Startup.cs - Configure - UseDefaultFiles
+используются для обработки запрос а в корне веб приложения (имена default.html index.html, или переопределение )
+
+wwroot - index.html
+
+~~~~~~~~~
+[12]
+Dependency Injection & Services
+Внедрение зависимостей и сервисы
+
