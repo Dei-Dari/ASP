@@ -1,3 +1,4 @@
+using ASP.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -24,11 +25,30 @@ namespace ASP
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        // Dependency Injection
+        // IServiceCollection - коллекция сервисов, много сервисов добавляется автоматически
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
             //сервис MVC для обработки запросов
-            // services.AddMvc();
+            //services.AddMvc();
+
+            // добавление сервиса и его конкретную реализацию в коллекцию сервисов
+            services.AddTransient<IMessageSender, EmailMessageSender>();
+            services.AddTransient<TimeService>();
+            services.AddTransient<MessageService>();
+
+            //// добавление сущностей методом Transient (ICounter, CounterService конструктор - два объекта передаются)
+            //services.AddTransient<ICounter, RandomCounter>();
+            //services.AddTransient<CounterService>();
+
+            //// добавление сущностей методом Scoped (ICounter, CounterService - один объект передается) 
+            //services.AddScoped<ICounter, RandomCounter>();
+            //services.AddScoped<CounterService>();
+
+            // добавление сущностей методом Singleton (ICounter, CounterService - для всех запросов один объект RandomCounter) 
+            services.AddSingleton<ICounter, RandomCounter>();
+            services.AddSingleton<CounterService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -184,8 +204,9 @@ namespace ASP
         {
             app.Run(async (context) =>
             {
+                MessageService sender = context.RequestServices.GetService<MessageService>();
                 context.Response.ContentType = "text/html;charset=utf-8";
-                await context.Response.WriteAsync("<h2>About</h2>");
+                await context.Response.WriteAsync($"<h2>About</h2>" + $"<h3>{sender.SendMessage()}</h3>");
             });
         }
     }
